@@ -60,7 +60,9 @@ if (isset($_POST["SIGNUP"])){
 			$db->close();
 		}
 		else{
-			$createUserQuery = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
+			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+			$createUserQuery = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$hashed_password')";
 			$createUser = $db->query($createUserQuery);
 			header("Location: login");
 			$db->close();

@@ -47,7 +47,7 @@ if (isset($_POST["LOGIN"])){
 		}
 		else {
 			while ($userRow = $getUser->fetch_assoc()){
-				if ($userRow["password"] != $password){
+				if (!password_verify($password, $userRow["password"])){
 					$_SESSION["error"] = "Password entered incorrectly. Please try again!";
 					$db->close();
 				}
