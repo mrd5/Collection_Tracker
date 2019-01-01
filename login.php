@@ -6,16 +6,25 @@ include('connection.php');
 $validateL = true;//for validating the username and password
 $reg_PswdL = "/^(\S*)?\d+(\S*)?$/";//Validates password
 $reg_uname = "/^[A-Za-z]+$/"; //Makes sure username is proper format - letters ONLY
-
+$reg_Email = "/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/"; //Makes sure email is in proper format : something@somewhere.adr
 
 if (isset($_POST["LOGIN"])){
-	$username = trim($_POST["username"]);
+	$usernameOrEmail = trim($_POST["username"]);
 	$password = trim($_POST["password"]);
 
+	if (strpos($usernameOrEmail, '@') === false){
 	//validate username
-	$usernameMatch = preg_match($reg_uname, $username);
-	if ($username == null || $username == "" || $usernameMatch == false){
-		$validateL = false;
+		$usernameMatch = preg_match($reg_uname, $usernameOrEmail);
+		if ($usernameOrEmail == null || $usernameOrEmail == "" || $usernameMatch == false){
+			$validateL = false;
+		}
+	}
+	else{
+	//validate email
+		$emailMatch = preg_match($reg_Email, $usernameOrEmail);
+		if ($usernameOrEmail == null || $usernameOrEmail == "" || $emailMatch == false){
+			$validateL = false;
+		}
 	}
 
 	$passwordLength = strlen($password);
@@ -25,15 +34,15 @@ if (isset($_POST["LOGIN"])){
 	}
 
 	if ($validateL == false){
-		$_SESSION["error"] = "Username or password was entered incorrectly. Turn on Javascript to see what their requirements!";
+		$_SESSION["error"] = "Username/Email or password was entered incorrectly. Turn on Javascript to see what their requirements!";
 		$db->close();
 	}
 	else{
-		$getUserQuery = "SELECT * FROM users WHERE username = '$username'";
+		$getUserQuery = "SELECT * FROM users WHERE username = '$usernameOrEmail' OR email = '$usernameOrEmail'";
 		$getUser = $db->query($getUserQuery);
 
 		if ($getUser->num_rows == 0){
-			$_SESSION["error"] = "That username is not in use. Please try again or create an account!";
+			$_SESSION["error"] = "That username or email is not in use. Please try again or create an account!" . $isEmail . "t";
 			$db->close();
 		}
 		else {
@@ -95,7 +104,7 @@ if (isset($_SESSION["error"])){
 			<div class="agileits-top">
 				<form action="login.php" method="post">
 					<label id="uname_msg" class="err_msg"></label>
-					<input type="text" name="username" placeholder="Username" id="username"/><br />
+					<input type="text" name="username" placeholder="Username or Email" id="username"/><br />
 					<label id="pswdLogin_msg" class="err_msg"></label>
 					<input type="password" name="password" placeholder="Password" id="password"/>
 					<input type="submit" value="LOGIN" name="LOGIN" id="LOGIN"/>
