@@ -24,6 +24,7 @@ if (isset($_POST["SUBMIT"])){
 
 <!-- web font -->
 <link rel="stylesheet" type="text/css" href="css/register.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- //web font -->
 
 <script type="text/javascript" src="/javascript/contact/contact.js"></script>
@@ -32,7 +33,15 @@ if (isset($_POST["SUBMIT"])){
 <div class="topnav">
   <?php
   if (isset($_SESSION["username"])){
-    echo "<p>Welcome, " . $_SESSION["username"] . "</p>";
+    echo "<div class='dropdown'>";
+    echo "<button class='dropbtn'>Welcome, " . $_SESSION["username"] . " ";
+    echo "<i class='fa fa-caret-down'></i>";
+    echo "</button>";
+    echo "<div class='dropdown-content'>";
+    echo "<a href='/settings'>Account Settings</a>";
+    echo "<a href='/logout'>Logout</a>";
+    echo "</div>";
+    echo "</div>";
   }
   else{
     echo "<a href='/login'>Login</a>";
@@ -40,11 +49,6 @@ if (isset($_POST["SUBMIT"])){
   ?>
   <a href="/home">Home</a>
   <a href="/contact" class="active-page">Contact</a>
-  <?php
-  if (isset($_SESSION["username"])){
-    echo "<a href='/logout'>Logout</a>";
-  }
-  ?>
 </div>
 <body>
   <!-- main -->

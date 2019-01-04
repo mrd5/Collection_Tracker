@@ -16,6 +16,7 @@ include('connection.php');
 
 <!-- web font -->
 <link rel="stylesheet" type="text/css" href="css/register.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 <!-- //web font -->
 
 </head>
@@ -24,19 +25,21 @@ include('connection.php');
 <div class="topnav">
   <?php
   if (isset($_SESSION["username"])){
-  	echo "<p>Welcome, " . $_SESSION["username"] . "</p>";
+    echo "<div class='dropdown'>";
+    echo "<button class='dropbtn'>Welcome, " . $_SESSION["username"] . " ";
+    echo "<i class='fa fa-caret-down'></i>";
+    echo "</button>";
+    echo "<div class='dropdown-content'>";
+    echo "<a href='/settings'>Account Settings</a>";
+    echo "<a href='/logout'>Logout</a>";
+    echo "</div>";
+    echo "</div>";
   }
   else{
-  	echo "<a href='/login'>Login</a>";
-  }
-  ?>
+    echo "<a href='/login'>Login</a>";
+  }  ?>
   <a href="/home" class="active-page">Home</a>
   <a href="/contact">Contact</a>
-  <?php
-  if (isset($_SESSION["username"])){
-  	echo "<a href='/logout'>Logout</a>";
-  }
-  ?>
 </div>
 	<!-- main -->
 	<div class="main-w3layouts wrapper">
